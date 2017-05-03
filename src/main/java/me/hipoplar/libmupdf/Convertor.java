@@ -18,7 +18,7 @@ public class Convertor {
 		Document document = null;
 		List<BufferedImage> images = new ArrayList<>();
 		try {
-			document = new Document(filename);
+			document = Document.openDocument(filename);
 			for (int i = 0; i < document.countPages(); i++) {
 				Page p = null;
 				try {
@@ -48,7 +48,7 @@ public class Convertor {
 		Document document = null;
 		List<BufferedImage> images = new ArrayList<>();
 		try {
-			document = new Document(pdf, magic);
+			document = Document.openDocument(pdf, magic);
 			for (int i = 0; i < document.countPages(); i++) {
 				Page p = null;
 				try {
@@ -78,7 +78,7 @@ public class Convertor {
 		Document document = null;
 		Page p = null;
 		try {
-			document = new Document(pdf, magic);
+			document = Document.openDocument(pdf, magic);
 			p = document.loadPage(page - 1);
 			return Convertor.toImage(p, 2f);
 		} catch (Exception e) {
