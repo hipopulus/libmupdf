@@ -23,9 +23,8 @@ public class Convertor {
 				Page p = null;
 				try {
 					p = document.loadPage(i);
-					images.add(Convertor.toImage(p, 2f));
+					images.add(Convertor.toImage(p, scale));
 				} catch (Exception e) {
-					e.printStackTrace();
 					throw new ConvertorException(e);
 				} finally {
 					if (p != null) {
@@ -38,6 +37,25 @@ public class Convertor {
 			e.printStackTrace();
 			throw new ConvertorException(e);
 		} finally {
+			if (document != null) {
+				document.destroy();
+			}
+		}
+	}
+	
+	public static BufferedImage toImage(String filename, int page, float scale) throws ConvertorException { 
+		Document document = null;
+		Page p = null;
+		try {
+			document = Document.openDocument(filename);
+			p = document.loadPage(page);
+			return Convertor.toImage(p, scale);
+		} catch (Exception e) {
+			throw new ConvertorException(e);
+		} finally {
+			if (p != null) {
+				p.destroy();
+			}
 			if (document != null) {
 				document.destroy();
 			}
@@ -53,7 +71,7 @@ public class Convertor {
 				Page p = null;
 				try {
 					p = document.loadPage(i);
-					images.add(Convertor.toImage(p, 2f));
+					images.add(Convertor.toImage(p, scale));
 				} catch (Exception e) {
 					e.printStackTrace();
 					throw new ConvertorException(e);
@@ -65,7 +83,6 @@ public class Convertor {
 			}
 			return images;
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new ConvertorException(e);
 		} finally {
 			if (document != null) {
@@ -80,9 +97,8 @@ public class Convertor {
 		try {
 			document = Document.openDocument(pdf, magic);
 			p = document.loadPage(page - 1);
-			return Convertor.toImage(p, 2f);
+			return Convertor.toImage(p, scale);
 		} catch (Exception e) {
-			e.printStackTrace();
 			throw new ConvertorException(e);
 		} finally {
 			if (document != null) {
