@@ -18,7 +18,7 @@ public class Context
 		if (!inited) {
 			inited = true;
 			try {
-				String libpath = "META-INF/lib";
+				String libpath = "META-INF/lib/";
 				URL url = Context.class.getClassLoader().getResource(libpath);
 				String libname = "mupdf_java";
 				String os_arch = System.getProperty("os.arch");
