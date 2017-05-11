@@ -18,10 +18,8 @@ public class Context
 		if (!inited) {
 			inited = true;
 			try {
-				String seprator = System.getProperty("file.separator");
-				StringBuilder libpath = new StringBuilder();
-				libpath.append("META-INF").append(seprator).append("lib").append(seprator);
-				URL url = Context.class.getClassLoader().getResource(libpath.toString());
+				String libpath = "META-INF/lib";
+				URL url = Context.class.getClassLoader().getResource(libpath);
 				String libname = "mupdf_java";
 				String os_arch = System.getProperty("os.arch");
 				if (os_arch.contains("64")) {
