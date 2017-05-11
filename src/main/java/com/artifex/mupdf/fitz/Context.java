@@ -1,5 +1,7 @@
 package com.artifex.mupdf.fitz;
 
+import java.net.URL;
+
 // This class handles the loading of the MuPDF shared library, together
 // with the ThreadLocal magic to get the required context.
 //
@@ -12,17 +14,22 @@ public class Context
 	private static native int initNative();
 	public static native int gprfSupportedNative();
 
-	public static void init() {
+	public synchronized static void init() {
 		if (!inited) {
 			inited = true;
 			try {
-				System.loadLibrary("mupdf_java");
-			} catch (UnsatisfiedLinkError e) {
-				try {
-					System.loadLibrary("mupdf_java64");
-				} catch (UnsatisfiedLinkError ee) {
-					System.loadLibrary("mupdf_java32");
+				String seprator = System.getProperty("file.separator");
+				StringBuilder libpath = new StringBuilder();
+				libpath.append("META-INF").append(seprator).append("lib").append(seprator);
+				URL url = Context.class.getClassLoader().getResource(libpath.toString());
+				String libname = "mupdf_java";
+				String os_arch = System.getProperty("os.arch");
+				if (os_arch.contains("64")) {
+					libname = libname + "64";
 				}
+				System.load(url.getPath() + System.mapLibraryName(libname));
+			} catch (UnsatisfiedLinkError e) {
+				throw new RuntimeException("cannot initialize mupdf library");
 			}
 			if (initNative() < 0)
 				throw new RuntimeException("cannot initialize mupdf library");
